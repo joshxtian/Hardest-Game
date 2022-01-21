@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public int level;
 
     public GameObject player;
-
+    private AudioSource bgMusic;
     public GameObject panelPlay;
     public GameObject panelGameOver;
 
@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {   
+        bgMusic = GetComponent<AudioSource>();
+
+        bgMusic.Play();
         Lives = lives;
         Level = level;
         Level = SceneManager.GetActiveScene().buildIndex + 1;
@@ -60,6 +63,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     public void GameOver() {
         panelGameOver.SetActive(true);
+        
+        bgMusic.Stop();
+        Destroy(bgMusic);
     }
 
     public void GameComplete() {

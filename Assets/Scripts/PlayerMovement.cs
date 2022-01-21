@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     private Vector2 moveDirection;
 
+    private AudioSource death;
     Vector2 initialPos;
 
     public GameObject gameManager;
@@ -20,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     {
         initialPos = this.transform.position;
         manager = gameManager.GetComponent<GameManager>();
+        death = GetComponent<AudioSource>();
+        
     }
 
     // Update is called once per frame
@@ -49,19 +52,21 @@ public class PlayerMovement : MonoBehaviour
 
     void ResetPosition() {
         this.transform.position = initialPos;
+        
     }
 
     
     public void OnTriggerEnter2D(Collider2D collision) {
         
         if(collision.tag == "Enemy" || collision.tag == "Wall") {
+            
             if(manager.Lives == 1 || manager.Lives < 1) {
                 Time.timeScale = 0f; 
                 manager.GameOver();
             } else {
+                death.Play();
+                manager.Lives -= 1;  
                 ResetPosition();
-                manager.Lives -= 1;    
-                
             } 
         } else if (collision.tag == "GameFinish") {
             
